@@ -151,7 +151,7 @@
     "href": "index.html#funciones-y-librerías-en-esta-sesión",
     "title": "Módulo 3: Visualización de datos con ggplot2",
     "section": "Funciones y librerías en esta sesión",
-    "text": "Funciones y librerías en esta sesión\nFunciones\n\nseq genera una secuencia de números.\n\nLibrerías\n\npalmerpenguins\nggplot2 es un paquete con una basta cantidad de funciones para llevar a cabo gráficos.\n\nggplot es la función que da inicio a todo objeto de ggplot2.\ngeom_ es el prefijo de todas las geometrías de ggplot2\n\nviridis es un paquete que ofrece 8 paletas de color basadas en secuencias de azul y amarillo (amigable con personas daltónicas).\nggsci ofrece paletas de color basadas en journals y series de televisión.\nfinalfit nos permite realizar exploración de los patrones de datos perdidos.\nGGally es un paquete con funcionalidades extras basadas en ggplot2. Aquí nos enfocamos en su uso para realizar gráficos de matrices de variables."
+    "text": "Funciones y librerías en esta sesión\nFunciones\n\nseq genera una secuencia de números.\nna.omit remueve observaciones perdidas.\n\nLibrerías\n\npalmerpenguins\nggplot2 es un paquete con una basta cantidad de funciones para llevar a cabo gráficos.\n\nggplot es la función que da inicio a todo objeto de ggplot2.\ngeom_ es el prefijo de todas las geometrías de ggplot2\n\nviridis es un paquete que ofrece 8 paletas de color basadas en secuencias de azul y amarillo (amigable con personas daltónicas).\nggsci ofrece paletas de color basadas en journals y series de televisión.\nfinalfit nos permite realizar exploración de los patrones de datos perdidos.\nGGally es un paquete con funcionalidades extras basadas en ggplot2. Aquí nos enfocamos en su uso para realizar gráficos de matrices de variables."
   },
   {
     "objectID": "index.html#datos-perdidos",
@@ -221,7 +221,7 @@
     "href": "index.html#gráficos-de-caja-y-bigote-en-r-base-1",
     "title": "Módulo 3: Visualización de datos con ggplot2",
     "section": "Gráficos de caja y bigote en R base",
-    "text": "Gráficos de caja y bigote en R base\n\n\nLos gráficos base de R son de rápida implementación.\nGeneralmente los uso para dar vistazos rápidos a los datos.\nPueden por supuesto ser usados para productos finales de publicación, pero la sintaxis para dar formato y exportarlos es un tanto confusa (a mi parecer).\nTienen sus limitaciones, ¿qué tal si en este caso me hubiese gustado realizar un gráfico por facetas para ver más variables categóricas al mismo tiempo?"
+    "text": "Gráficos de caja y bigote en R base\n\n\nLos gráficos base de R son de rápida implementación.\nGeneralmente sirven para dar vistazos rápidos a los datos.\nPueden por supuesto ser usados para productos finales de publicación, pero la sintaxis para dar formato y exportarlos es un tanto confusa (a mi parecer).\nTienen sus limitaciones, ¿qué tal si en este caso me hubiese gustado realizar un gráfico por facetas para ver más variables categóricas al mismo tiempo?"
   },
   {
     "objectID": "index.html#gráficos-de-caja-y-bigote-en-ggplot2",

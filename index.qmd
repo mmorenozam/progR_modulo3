@@ -905,7 +905,7 @@ par(mfrow = c(1, 1))
 
 -   Los gráficos base de R son de rápida implementación.
 
--   Generalmente los uso para dar vistazos rápidos a los datos.
+-   Generalmente sirven para dar vistazos rápidos a los datos.
 
 -   Pueden por supuesto ser usados para productos finales de publicación, pero la sintaxis para dar formato y exportarlos es un tanto confusa (a mi parecer).
 
@@ -1368,6 +1368,8 @@ report_xray(data = penguins, data_name = 'penguins', study = "ggplot2")
 **Funciones**
 
 -   `seq` genera una secuencia de números.
+
+-   `na.omit` remueve observaciones perdidas.
 
 **Librerías**
 
