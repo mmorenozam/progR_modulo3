@@ -29,6 +29,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -339,14 +404,1284 @@ Mauricio Moreno, PhD
 </div>
 
 </section>
-<section id="antes-de-comenzar" class="title-slide slide level1 center">
-<h1>Antes de comenzar!</h1>
+<section id="introducción" class="slide level2 smaller">
+<h2>Introducción</h2>
+<div>
+<ul>
+<li class="fragment"><p>En esta sesión aprenderemos a hacer uso del paquete <code>ggplot2</code> del <code>tidyverse</code>.</p></li>
+<li class="fragment"><p>A la par, veremos estrategias de llevar a cabo analisis exploratorio de datos (AED) ya que este depende mayoritariamente de ayudas visuales.</p></li>
+<li class="fragment"><p>Usaremos además los datos del paquete <code>palmerpenguins</code> así también como los datos del archivo de Excel “rotaXLS.xlsx”.</p></li>
+<li class="fragment"><p>Paquetes adicionales: <code>viridis</code>, <code>ggsci</code>, <code>patchwork</code>, <code>finalfit</code>, <code>GGally</code>: <code>install.packages("viridis", "ggsci", "patchwork", "finalfit", "GGally")</code></p></li>
+<li class="fragment"><p>Aprenderemos entonces, paso a paso cómo funciona <code>ggplot2</code> dando un vistazo a sus funciones y objetos.</p></li>
+</ul>
+</div>
+</section>
+<section>
+<section id="introducción-a-ggplot2" class="title-slide slide level1 center">
+<h1>Introducción a <code>ggplot2</code></h1>
+
+</section>
+<section id="ggplot2" class="slide level2 smaller">
+<h2><code>ggplot2</code></h2>
+<div>
+<ul>
+<li class="fragment"><p><code>ggplot2</code> es un paquete de gráficos creada por Hadley Wickham en 2005 como una opción alternativa a los gráficos base de R (es de hecho este paquete el que inició el <code>tidyverse</code>).</p></li>
+<li class="fragment"><p>Se basa en añadir elementos a un gráfico capa por capa.</p></li>
+<li class="fragment"><p>Tanto tablas anchas como largas pueden suministrarse a <code>ggplot2</code>. Sin embargo, en la mayoría de los casos, se explotan más sus capacidades al utilizar tablas largas.</p></li>
+<li class="fragment"><p>Presenta varias ventajas, entre ellas:</p>
+<ul>
+<li class="fragment"><p>Mayor versatilidad al integrar funciones predeterminadas que permiten cambiar entre tipos de gráficos fácil y rápidamente.</p></li>
+<li class="fragment"><p>Amplia variedad de paletas de color y estilos (útiles para crear gráficos profesionales y listos para publicación).</p></li>
+<li class="fragment"><p>Basta cantidad de librerías accesorias para gráficos especializados.</p></li>
+</ul></li>
+<li class="fragment"><p>Su funcionamiento se basa principalmente en:</p>
+<ul>
+<li class="fragment"><p>El argumento de mapeo (<code>mapping</code>)</p></li>
+<li class="fragment"><p>y, Geometrías (<code>geom_</code>).</p></li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="función-de-inicio-ggplot" class="slide level2">
+<h2>Función de inicio <code>ggplot</code></h2>
+<div>
+<ul>
+<li class="fragment"><p>Constituye la primera capa o la base para llevar a cabo un gráfico.</p></li>
+<li class="fragment"><p>Posee dos argumentos principales:</p>
+<ul>
+<li class="fragment"><p><code>data</code> para indicar la tabla de datos a usarse</p></li>
+<li class="fragment"><p><code>mapping</code> para indicar las variables que gobernarán los ejes coordenados del gráfico</p></li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="función-de-inicio-ggplot-1" class="slide level2" data-visibility="uncounted">
+<h2>Función de inicio <code>ggplot</code></h2>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Código</a></li><li><a href="#tabset-1-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1" data-code-line-numbers="1|2|4-6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">ggplot</span>(<span class="at">data =</span> penguins,</span>
+<span id="cb1-5"><a href="#cb1-5"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, </span>
+<span id="cb1-6"><a href="#cb1-6"></a>                     <span class="at">y =</span> bill_depth_mm))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-1-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="geometrías" class="slide level2 smaller">
+<h2>Geometrías</h2>
+<div>
+<ul>
+<li class="fragment"><p>Las geometrías son objetos que serán superpuestos en la base creada por la función de inicio.</p></li>
+<li class="fragment"><p>En general, están nombradas con la preposición <code>geom_</code> seguida de su clase.</p></li>
+<li class="fragment"><p>Existen una variedad amplia de geometrías:</p>
+<ul>
+<li class="fragment"><p><code>geom_bar</code> para gráficos de barras</p></li>
+<li class="fragment"><p><code>geom_line</code> para gráficos de lineas</p></li>
+<li class="fragment"><p><code>geom_boxplot</code> para gráficos de caja y bigote</p></li>
+<li class="fragment"><p><code>geom_histogram</code> para histogramas</p></li>
+<li class="fragment"><p><code>geom_density</code> para densidades</p></li>
+<li class="fragment"><p><a href="https://ggplot2.tidyverse.org/reference/" target="_blank">entre otras</a></p></li>
+</ul></li>
+<li class="fragment"><p>Para añadir geometrías y otras opciones a nuestro gráfico base usamos los operadores:</p>
+<ul>
+<li class="fragment"><p><code>+</code>, ó</p></li>
+<li class="fragment"><p><code>%+%</code>. Este último no es tan común, ya que sobre-escribe los datos originales.</p></li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="geometrías-1" class="slide level2" data-visibility="uncounted">
+<h2>Geometrías</h2>
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Código</a></li><li><a href="#tabset-2-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2" data-code-line-numbers="2-3|4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> penguins,</span>
+<span id="cb2-2"><a href="#cb2-2"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, </span>
+<span id="cb2-3"><a href="#cb2-3"></a>                     <span class="at">y =</span> bill_depth_mm)) <span class="sc">+</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-2-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="estéticas-de-las-geometrías-aesthetics" class="slide level2 smaller">
+<h2>Estéticas de las geometrías (<em>aesthetics</em>)</h2>
+<div>
+<ul>
+<li class="fragment"><p>Las geometrías tienen argumentos en común independientemente de sus específicos usos.</p></li>
+<li class="fragment"><p>Entre estas están:</p>
+<ul>
+<li class="fragment"><p><code>alpha</code> determina el nivel de transparencia (entre 0 y 1).</p></li>
+<li class="fragment"><p><code>fill</code> determina el color de relleno de una geometría. Puede ser agregado de manera manual o en función de otra variable.</p></li>
+<li class="fragment"><p><code>color</code> o <code>colour</code> determina el color del contorno de una geometría. Puede ser agregado de manera manual o en función de otra variable.</p></li>
+</ul></li>
+<li class="fragment"><p>Existen <em>aesthetics</em> más específicos que funcionarán únicamente con ciertas geometrías, tales como:</p>
+<ul>
+<li class="fragment"><p><code>size</code>, determina el tamaño de los puntos en la geometría de puntos (<code>geom_point</code>)</p></li>
+<li class="fragment"><p><code>linetype</code>, con <a href="https://ggplot2.tidyverse.org/articles/ggplot2-specs.html" target="_blank">6 posibles valores</a> permite seleccionar el estilo de línea.</p></li>
+<li class="fragment"><p><code>linewidth</code> determina el grosor de una línea.</p></li>
+<li class="fragment"><p><code>lineend</code> determina el estilo de los extremos de una línea.</p></li>
+<li class="fragment"><p><code>shape</code> determina el estilo de los puntos a mostrarse (25 posibles estilos)</p></li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="estéticas-de-las-geometrías-aesthetics-1" class="slide level2" data-visibility="uncounted">
+<h2>Estéticas de las geometrías (<em>aesthetics</em>)</h2>
+<div class="panel-tabset">
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Código</a></li><li><a href="#tabset-3-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3" data-code-line-numbers="2-3|4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> penguins,</span>
+<span id="cb3-2"><a href="#cb3-2"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, </span>
+<span id="cb3-3"><a href="#cb3-3"></a>                     <span class="at">y =</span> bill_depth_mm)) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-3-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="formato-básico-de-figuras-en-ggplot2" class="title-slide slide level1 center">
+<h1>Formato básico de figuras en <code>ggplot2</code></h1>
+
+</section>
+<section id="agrupaciones" class="slide level2 scrollable">
+<h2>Agrupaciones</h2>
+<ul>
+<li><p>Se pueden asignar estéticas dependiendo de los grupos presentes en los datos.</p></li>
+<li><p>Podemos definirlo en la función de mapeo.</p></li>
+</ul>
+<div class="panel-tabset">
+<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Código</a></li><li><a href="#tabset-4-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4" data-code-line-numbers="4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> penguins,</span>
+<span id="cb4-2"><a href="#cb4-2"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, </span>
+<span id="cb4-3"><a href="#cb4-3"></a>                     <span class="at">y =</span> bill_depth_mm,</span>
+<span id="cb4-4"><a href="#cb4-4"></a>                     <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>, <span class="at">size =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-4-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="escalas" class="slide level2">
+<h2>Escalas</h2>
+<div class="panel-tabset">
+<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Código</a></li><li><a href="#tabset-5-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5" data-code-line-numbers="6-7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> penguins,</span>
+<span id="cb5-2"><a href="#cb5-2"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, </span>
+<span id="cb5-3"><a href="#cb5-3"></a>                     <span class="at">y =</span> bill_depth_mm,</span>
+<span id="cb5-4"><a href="#cb5-4"></a>                     <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">24</span>, <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-5-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="paletas-de-color" class="slide level2">
+<h2>Paletas de color</h2>
+<div>
+<ul>
+<li class="fragment"><p>Una de las razones por las cuales <code>ggplot2</code> es tan popular, es la relativa sencillez de usar distintas paletas de color.</p></li>
+<li class="fragment"><p>Al no ser un curso dedicado a visualización de datos, nos limitaremos a explorar la oferta de mis dos librerías preferidas para paletas de color con <code>ggplot2</code>.</p></li>
+<li class="fragment"><p><code>viridis</code> ofrece 8 paletas de color basadas en secuencias de azul y amarillo que evitan en la medida de lo posible el color rojo. Es recomendada por ciertos Journals al ser amigable con personas daltónicas.</p></li>
+<li class="fragment"><p><code>ggsci</code> ofrece varias paletas de color inspiradas en los colores usados por distintos journals (por ejemplo: <em>Nature</em>, <em>Lancet</em> entre otros), además de paletas inspiradas en series de televisión (por ejemplo: <em>Futurama</em>, <em>Rick &amp; Morty</em> entre otros).</p></li>
+</ul>
+</div>
+</section>
+<section id="paletas-de-color-1" class="slide level2 smaller" data-visibility="uncounted">
+<h2>Paletas de color</h2>
+<div class="panel-tabset">
+<ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">Código</a></li><li><a href="#tabset-6-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-6-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6" data-code-line-numbers="1|9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">library</span>(viridis)</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">ggplot</span>(<span class="at">data =</span> penguins,</span>
+<span id="cb6-3"><a href="#cb6-3"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, </span>
+<span id="cb6-4"><a href="#cb6-4"></a>                     <span class="at">y =</span> bill_depth_mm,</span>
+<span id="cb6-5"><a href="#cb6-5"></a>                     <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">24</span>, <span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">discrete =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-6-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="paletas-de-color-2" class="slide level2 smaller" data-visibility="uncounted">
+<h2>Paletas de color</h2>
+<div class="panel-tabset">
+<ul id="tabset-7" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-7-1">Código</a></li><li><a href="#tabset-7-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-7-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7" data-code-line-numbers="1|9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">library</span>(ggsci)</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">ggplot</span>(<span class="at">data =</span> penguins,</span>
+<span id="cb7-3"><a href="#cb7-3"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, </span>
+<span id="cb7-4"><a href="#cb7-4"></a>                     <span class="at">y =</span> bill_depth_mm,</span>
+<span id="cb7-5"><a href="#cb7-5"></a>                     <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">24</span>, <span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>  <span class="fu">scale_color_futurama</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-7-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="facetas" class="slide level2 smaller">
+<h2>Facetas</h2>
+<div class="panel-tabset">
+<ul id="tabset-8" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-8-1">Código</a></li><li><a href="#tabset-8-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-8-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8" data-code-line-numbers="9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> penguins,</span>
+<span id="cb8-2"><a href="#cb8-2"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, </span>
+<span id="cb8-3"><a href="#cb8-3"></a>                     <span class="at">y =</span> bill_depth_mm,</span>
+<span id="cb8-4"><a href="#cb8-4"></a>                     <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">24</span>, <span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>  <span class="fu">scale_color_futurama</span>() <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>island)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-8-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-16-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="etiquetas" class="slide level2 smaller">
+<h2>Etiquetas</h2>
+<div class="panel-tabset">
+<ul id="tabset-9" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-9-1">Código</a></li><li><a href="#tabset-9-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-9-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9" data-code-line-numbers="10-15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> penguins,</span>
+<span id="cb9-2"><a href="#cb9-2"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, </span>
+<span id="cb9-3"><a href="#cb9-3"></a>                     <span class="at">y =</span> bill_depth_mm,</span>
+<span id="cb9-4"><a href="#cb9-4"></a>                     <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">24</span>, <span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a>  <span class="fu">scale_color_futurama</span>() <span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>island) <span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Largo de pico vs. Profundidad de pico"</span>,</span>
+<span id="cb9-11"><a href="#cb9-11"></a>       <span class="at">subtitle =</span> <span class="st">"Pingüinos de Palmer"</span>,</span>
+<span id="cb9-12"><a href="#cb9-12"></a>       <span class="at">caption =</span> <span class="st">"Gráfica propia"</span>,</span>
+<span id="cb9-13"><a href="#cb9-13"></a>       <span class="at">x =</span> <span class="st">"Largo del pico"</span>,</span>
+<span id="cb9-14"><a href="#cb9-14"></a>       <span class="at">y =</span> <span class="st">"Profundidad del pico"</span>,</span>
+<span id="cb9-15"><a href="#cb9-15"></a>       <span class="at">color =</span> <span class="st">"Especie"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-9-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="estilos" class="slide level2 smaller">
+<h2>Estilos</h2>
+<div class="panel-tabset">
+<ul id="tabset-10" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-10-1">Código</a></li><li><a href="#tabset-10-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-10-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10" data-code-line-numbers="16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> penguins,</span>
+<span id="cb10-2"><a href="#cb10-2"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, </span>
+<span id="cb10-3"><a href="#cb10-3"></a>                     <span class="at">y =</span> bill_depth_mm,</span>
+<span id="cb10-4"><a href="#cb10-4"></a>                     <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">24</span>, <span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a>  <span class="fu">scale_color_futurama</span>() <span class="sc">+</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>island) <span class="sc">+</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Largo de pico vs. Profundidad de pico"</span>,</span>
+<span id="cb10-11"><a href="#cb10-11"></a>       <span class="at">subtitle =</span> <span class="st">"Pingüinos de Palmer"</span>,</span>
+<span id="cb10-12"><a href="#cb10-12"></a>       <span class="at">caption =</span> <span class="st">"Gráfica propia"</span>,</span>
+<span id="cb10-13"><a href="#cb10-13"></a>       <span class="at">x =</span> <span class="st">"Largo del pico"</span>,</span>
+<span id="cb10-14"><a href="#cb10-14"></a>       <span class="at">y =</span> <span class="st">"Profundidad del pico"</span>,</span>
+<span id="cb10-15"><a href="#cb10-15"></a>       <span class="at">color =</span> <span class="st">"Especie"</span>) <span class="sc">+</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-10-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-20-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="gráficos-como-objetos" class="slide level2 smaller">
+<h2>Gráficos como objetos</h2>
+<div class="panel-tabset">
+<ul id="tabset-11" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-11-1">Código</a></li><li><a href="#tabset-11-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-11-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11" data-code-line-numbers="1|18-19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>grafico1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> penguins,</span>
+<span id="cb11-2"><a href="#cb11-2"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, </span>
+<span id="cb11-3"><a href="#cb11-3"></a>                     <span class="at">y =</span> bill_depth_mm,</span>
+<span id="cb11-4"><a href="#cb11-4"></a>                     <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">24</span>, <span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a>  <span class="fu">scale_color_futurama</span>() <span class="sc">+</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>island) <span class="sc">+</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Largo de pico vs. Profundidad de pico"</span>,</span>
+<span id="cb11-11"><a href="#cb11-11"></a>       <span class="at">subtitle =</span> <span class="st">"Pingüinos de Palmer"</span>,</span>
+<span id="cb11-12"><a href="#cb11-12"></a>       <span class="at">caption =</span> <span class="st">"Gráfica propia"</span>,</span>
+<span id="cb11-13"><a href="#cb11-13"></a>       <span class="at">x =</span> <span class="st">"Largo del pico"</span>,</span>
+<span id="cb11-14"><a href="#cb11-14"></a>       <span class="at">y =</span> <span class="st">"Profundidad del pico"</span>,</span>
+<span id="cb11-15"><a href="#cb11-15"></a>       <span class="at">color =</span> <span class="st">"Especie"</span>) <span class="sc">+</span></span>
+<span id="cb11-16"><a href="#cb11-16"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb11-17"><a href="#cb11-17"></a></span>
+<span id="cb11-18"><a href="#cb11-18"></a>grafico2 <span class="ot">&lt;-</span> grafico1 <span class="sc">+</span> <span class="fu">theme_classic</span>()</span>
+<span id="cb11-19"><a href="#cb11-19"></a>grafico2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-11-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-22-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="geometrías-estadísticas" class="slide level2">
+<h2>Geometrías estadísticas</h2>
+<div>
+<ul>
+<li class="fragment"><p>Otra funcionalidad importante son las geometrías estadísticas. Entre ellas:</p></li>
+<li class="fragment"><p><code>geom_smooth</code>: grafica regresiones sobre nubes de puntos</p></li>
+<li class="fragment"><p><code>geom_errorbar</code> y <code>geom_errorbarh</code>: grafican lineas de error verticales y horizontales respectivamente.</p></li>
+<li class="fragment"><p><code>geom_ribbon</code>: grafica nubes sombreadas que pueden representar varios estadísticos como errores estándar, intervalos de confianza, etc.</p></li>
+</ul>
+</div>
+</section>
+<section id="geometrías-estadísticas-1" class="slide level2" data-visibility="uncounted">
+<h2>Geometrías estadísticas</h2>
+<div class="panel-tabset">
+<ul id="tabset-12" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-12-1">Código</a></li><li><a href="#tabset-12-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-12-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12" data-code-line-numbers="10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> penguins,</span>
+<span id="cb12-2"><a href="#cb12-2"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, </span>
+<span id="cb12-3"><a href="#cb12-3"></a>                     <span class="at">y =</span> bill_depth_mm,</span>
+<span id="cb12-4"><a href="#cb12-4"></a>                     <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">24</span>, <span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a>  <span class="fu">scale_color_futurama</span>() <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>island) <span class="sc">+</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>) <span class="sc">+</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Largo de pico vs. Profundidad de pico"</span>,</span>
+<span id="cb12-12"><a href="#cb12-12"></a>       <span class="at">subtitle =</span> <span class="st">"Pingüinos de Palmer"</span>,</span>
+<span id="cb12-13"><a href="#cb12-13"></a>       <span class="at">caption =</span> <span class="st">"Gráfica propia"</span>,</span>
+<span id="cb12-14"><a href="#cb12-14"></a>       <span class="at">x =</span> <span class="st">"Largo del pico"</span>,</span>
+<span id="cb12-15"><a href="#cb12-15"></a>       <span class="at">y =</span> <span class="st">"Profundidad del pico"</span>,</span>
+<span id="cb12-16"><a href="#cb12-16"></a>       <span class="at">color =</span> <span class="st">"Especie"</span>) <span class="sc">+</span></span>
+<span id="cb12-17"><a href="#cb12-17"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-12-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-24-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="autoevaluación-7" class="slide level2 smaller scrollable">
+<h2>Autoevaluación # 7</h2>
+<ol type="1">
+<li><code>theme_light</code> produce gráficos como</li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-25-1.png" class="quarto-discovered-preview-image" width="1536"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ol start="2" type="1">
+<li>El siguiente gráfico</li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-26-1.png" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>Es producido por el(los) código(s):</p>
+<ol type="a">
+<li></li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">y=</span>Petal.Width)) <span class="sc">+</span> </span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">fill=</span>Species))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="a">
+<li></li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">y=</span>Petal.Width, <span class="at">color=</span>Species)) <span class="sc">+</span> </span>
+<span id="cb14-2"><a href="#cb14-2"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="3" type="a">
+<li></li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">y=</span>Petal.Width, <span class="at">fill=</span>Species)) <span class="sc">+</span> </span>
+<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ol start="3" type="1">
+<li>Para obtener el siguiente gráfico:</li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-30-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>Debo modificar la última línea del código:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> penguins,</span>
+<span id="cb16-2"><a href="#cb16-2"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, </span>
+<span id="cb16-3"><a href="#cb16-3"></a>                     <span class="at">y =</span> bill_depth_mm,</span>
+<span id="cb16-4"><a href="#cb16-4"></a>                     <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a>  <span class="fu">scale_color_viridis</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>por:</p>
+<ol type="a">
+<li><p><code>scale_color_viridis(option = "G")</code></p></li>
+<li><p><code>scale_color_viridis(discrete = T, option = "G")</code></p></li>
+<li><p><code>scale_color_viridis(discrete = T, option = "H")</code></p></li>
+</ol>
+</section></section>
+<section>
+<section id="principios-de-análisis-exploratorio-de-datos-aed" class="title-slide slide level1 center">
+<h1>Principios de Análisis Exploratorio de Datos (AED)</h1>
+
+</section>
+<section id="datos-perdidos" class="slide level2 smaller">
+<h2>Datos perdidos</h2>
+<div>
+<ul>
+<li class="fragment"><p>La perdida de datos es común en casi todo experimento, sobre todo en aquellos de naturaleza observacional.</p></li>
+<li class="fragment"><p>El primer paso que recomiendo en un análisis exploratorio, es checar si existen o no datos perdidos.</p></li>
+<li class="fragment"><p>Esto por cuanto así se prevee si los métodos de inferencia a usarse necesitan o no ser corregidos.</p></li>
+<li class="fragment"><p>Únicamente cuando la severidad de la pérdida de datos es muy grande aconsejo a recurrir a estas dos opciones (en orden de complejidad estadística de menor a mayor)</p>
+<ul>
+<li class="fragment"><p>Repetir el experimento</p></li>
+<li class="fragment"><p>Llevar a cabo imputación de datos</p></li>
+</ul></li>
+<li class="fragment"><p>En este curso vamos a limitarnos a usar métodos de análisis corregidos cuando estemos ante la presencia de datos perdidos ya que la imputación de datos requiere de conocimientos teóricos extensos acerca de los tipos de mecanismos de pérdida de datos.</p></li>
+<li class="fragment"><p><strong>EVITAR</strong> el reemplazar los valores perdidos por ceros. Esta suele ser una práctica más o menos común pero que introduce mayores problemas que los que “soluciona”.</p></li>
+<li class="fragment"><p>En resumen, no hay que temer el contar con datos perdidos, siempre y cuando estos no sean masivos.</p></li>
+</ul>
+</div>
+</section>
+<section id="datos-perdidos-1" class="slide level2" data-visibility="uncounted" data-autoanimate="true">
+<h2>Datos perdidos</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17" data-code-line-numbers="1|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">library</span>(finalfit)</span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="fu">ff_glimpse</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="datos-perdidos-2" class="slide level2" data-visibility="uncounted" data-autoanimate="true">
+<h2>Datos perdidos</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">library</span>(finalfit)</span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="fu">ff_glimpse</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$Continuous
+                              label var_type   n missing_n missing_percent
+bill_length_mm       bill_length_mm    &lt;dbl&gt; 342         2             0.6
+bill_depth_mm         bill_depth_mm    &lt;dbl&gt; 342         2             0.6
+flipper_length_mm flipper_length_mm    &lt;int&gt; 342         2             0.6
+body_mass_g             body_mass_g    &lt;int&gt; 342         2             0.6
+year                           year    &lt;int&gt; 344         0             0.0
+                    mean    sd    min quartile_25 median quartile_75    max
+bill_length_mm      43.9   5.5   32.1        39.2   44.5        48.5   59.6
+bill_depth_mm       17.2   2.0   13.1        15.6   17.3        18.7   21.5
+flipper_length_mm  200.9  14.1  172.0       190.0  197.0       213.0  231.0
+body_mass_g       4201.8 802.0 2700.0      3550.0 4050.0      4750.0 6300.0
+year              2008.0   0.8 2007.0      2007.0 2008.0      2009.0 2009.0
+
+$Categorical
+          label var_type   n missing_n missing_percent levels_n
+species species    &lt;fct&gt; 344         0             0.0        3
+island   island    &lt;fct&gt; 344         0             0.0        3
+sex         sex    &lt;fct&gt; 333        11             3.2        2
+                                 levels levels_count   levels_percent
+species "Adelie", "Chinstrap", "Gentoo" 152, 68, 124       44, 20, 36
+island   "Biscoe", "Dream", "Torgersen" 168, 124, 52       49, 36, 15
+sex       "female", "male", "(Missing)" 165, 168, 11 48.0, 48.8,  3.2</code></pre>
+</div>
+</div>
+</section>
+<section id="datos-perdidos-3" class="slide level2" data-visibility="uncounted" data-autoanimate="true">
+<h2>Datos perdidos</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb20" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">library</span>(finalfit)</span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="fu">ff_glimpse</span>(penguins)</span>
+<span id="cb20-3"><a href="#cb20-3"></a><span class="fu">missing_plot</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="datos-perdidos-4" class="slide level2" data-visibility="uncounted" data-autoanimate="true">
+<h2>Datos perdidos</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">missing_plot</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-35-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="datos-perdidos-5" class="slide level2" data-visibility="uncounted">
+<h2>Datos perdidos</h2>
+<div class="panel-tabset">
+<ul id="tabset-13" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-13-1">Código</a></li><li><a href="#tabset-13-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-13-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb22" data-code-line-numbers="1|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>sub_penguins <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(penguins)</span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="fu">ggplot</span>(sub_penguins,</span>
+<span id="cb22-3"><a href="#cb22-3"></a>       <span class="fu">aes</span>(<span class="at">x =</span> flipper_length_mm, <span class="at">y =</span> body_mass_g, <span class="at">colour =</span> species)) <span class="sc">+</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>,</span>
+<span id="cb22-5"><a href="#cb22-5"></a>             <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb22-6"><a href="#cb22-6"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>) <span class="sc">+</span> </span>
+<span id="cb22-7"><a href="#cb22-7"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">150</span>, <span class="dv">250</span>, <span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">2500</span>, <span class="dv">7000</span>, <span class="dv">500</span>)) <span class="sc">+</span></span>
+<span id="cb22-9"><a href="#cb22-9"></a>  <span class="fu">scale_color_viridis</span>(<span class="at">discrete =</span> T) <span class="sc">+</span></span>
+<span id="cb22-10"><a href="#cb22-10"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>sex) <span class="sc">+</span></span>
+<span id="cb22-11"><a href="#cb22-11"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Largo de aleta vs. peso"</span>,</span>
+<span id="cb22-12"><a href="#cb22-12"></a>       <span class="at">subtitle =</span> <span class="st">"Pingüinos de Palmer"</span>,</span>
+<span id="cb22-13"><a href="#cb22-13"></a>       <span class="at">caption =</span> <span class="st">"Gráfica propia"</span>,</span>
+<span id="cb22-14"><a href="#cb22-14"></a>       <span class="at">x =</span> <span class="st">"Largo de aleta"</span>,</span>
+<span id="cb22-15"><a href="#cb22-15"></a>       <span class="at">y =</span> <span class="st">"Peso"</span>,</span>
+<span id="cb22-16"><a href="#cb22-16"></a>       <span class="at">color =</span> <span class="st">"Especie"</span>) <span class="sc">+</span></span>
+<span id="cb22-17"><a href="#cb22-17"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-13-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-37-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="observaciones-anormales-outliers" class="slide level2 smaller">
+<h2>Observaciones anormales (outliers)</h2>
+<div>
+<ul>
+<li class="fragment"><p>Un outlier puede definirse como aquella observación que dista considerablemente de la <strong>mediana</strong> de una población.</p></li>
+<li class="fragment"><p>Pueden deberse a errores en la toma de mediciones <span class="fragment">o valores que realmente existen.</span></p></li>
+<li class="fragment"><p>En estadística, una entre varias definiciones de outlier es dada de acuerdo al criterio del Rango Intercuartílico (RIC o <em>IQR</em> en inglés).</p></li>
+<li class="fragment"><p>Este criterio establece que toda observación por encima del tercer cuartil + 1.5 veces el RIC o por debajo del primer cuartil - 1.5 veces el RIC es considerada como outlier.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p><span class="math display">\[
+I=\left[C_{0.25}-1.5 \times RIC ,\,C_{0.75}+1.5 \times RIC \right]
+\]</span></p>
+<div>
+<ul>
+<li class="fragment"><p>Donde el RIC es sencillamente la diferencia entre el primer y el tercer cuartil de una muestra.</p></li>
+<li class="fragment"><p>Este método es precisamente la base para los gráficos de caja y bigote.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="gráficos-de-caja-y-bigote" class="slide level2">
+<h2>Gráficos de caja y bigote</h2>
+
+<img data-src="images/box.jpg" class="r-stretch quarto-figure-center"><div>
+<ul>
+<li class="fragment">Un gráfico de caja y bigote es el resumen de 5 cantidades de importancia para explorar una distribución: <span class="fragment">la mediana, los cuantiles 1 y 3 y los valores mínimo y máximo de una distribución en función del RIC</span></li>
+</ul>
+</div>
+<div class="footer">
+<p>Imagen de autoría de <a href="https://builtin.com/data-science/boxplot" target="_blank">Michael Galarnyk</a></p>
+</div>
+</section>
+<section id="gráficos-de-caja-y-bigote-en-r-base" class="slide level2">
+<h2>Gráficos de caja y bigote en R base</h2>
+<div class="panel-tabset">
+<ul id="tabset-14" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-14-1">Código</a></li><li><a href="#tabset-14-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-14-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb23" data-code-line-numbers="1|2-4|5|6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">plot</span>(bill_depth_mm <span class="sc">~</span> island, <span class="at">data =</span> penguins)</span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="fu">plot</span>(bill_depth_mm <span class="sc">~</span> sex, <span class="at">data =</span> penguins)</span>
+<span id="cb23-4"><a href="#cb23-4"></a><span class="fu">plot</span>(bill_depth_mm <span class="sc">~</span> species, <span class="at">data =</span> penguins)</span>
+<span id="cb23-5"><a href="#cb23-5"></a><span class="fu">plot.new</span>()</span>
+<span id="cb23-6"><a href="#cb23-6"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-14-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-39-1.png" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="gráficos-de-caja-y-bigote-en-r-base-1" class="slide level2" data-visibility="uncounted">
+<h2>Gráficos de caja y bigote en R base</h2>
+<div>
+<ul>
+<li class="fragment"><p>Los gráficos base de R son de rápida implementación.</p></li>
+<li class="fragment"><p>Generalmente los uso para dar vistazos rápidos a los datos.</p></li>
+<li class="fragment"><p>Pueden por supuesto ser usados para productos finales de publicación, pero la sintaxis para dar formato y exportarlos es un tanto confusa (a mi parecer).</p></li>
+<li class="fragment"><p>Tienen sus limitaciones, <span class="fragment"><strong>¿qué tal si en este caso me hubiese gustado realizar un gráfico por facetas para ver más variables categóricas al mismo tiempo?</strong></span></p></li>
+</ul>
+</div>
+</section>
+<section id="gráficos-de-caja-y-bigote-en-ggplot2" class="slide level2">
+<h2>Gráficos de caja y bigote en <code>ggplot2</code></h2>
+<div class="panel-tabset">
+<ul id="tabset-15" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-15-1">Código</a></li><li><a href="#tabset-15-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-15-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb24" data-code-line-numbers="1|2|3|4|5|6|7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>sub_penguins <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(penguins)</span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="fu">ggplot</span>(sub_penguins,</span>
+<span id="cb24-3"><a href="#cb24-3"></a>       <span class="fu">aes</span>(<span class="at">y =</span> bill_depth_mm, <span class="at">x =</span> species, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb24-4"><a href="#cb24-4"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.fill =</span> <span class="st">"red"</span>,</span>
+<span id="cb24-5"><a href="#cb24-5"></a>               <span class="at">outlier.shape =</span> <span class="dv">23</span>) <span class="sc">+</span></span>
+<span id="cb24-6"><a href="#cb24-6"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>sex<span class="sc">~</span>island) <span class="sc">+</span> </span>
+<span id="cb24-7"><a href="#cb24-7"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-15-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-41-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="y-ahora-qué-hago-con-los-outliers" class="slide level2">
+<h2>Y ahora, ¿qué hago con los outliers?</h2>
+
+<img data-src="images/gatito.jpg" class="r-stretch quarto-figure-center"></section>
+<section id="y-ahora-qué-hago-con-los-outliers-1" class="slide level2 smaller" data-visibility="uncounted">
+<h2>Y ahora, ¿qué hago con los outliers?</h2>
+<div>
+<ul>
+<li class="fragment"><p>El remover outliers no se aconseja antes de llevar a cabo análisis de inferencia estadística.</p></li>
+<li class="fragment"><p>Para remover outliers antes de analizar propiamente los datos, se necesita tener certeza de las razones por las cuales estos fueron registrados:</p>
+<ul>
+<li class="fragment"><p>Fallas comprobadas en el equipo de medición</p></li>
+<li class="fragment"><p>Errores al escribir las mediciones en el medio de registro (libro de laboratorio, base de datos)</p></li>
+<li class="fragment"><p>Falencias en las técnicas, metodologías o materiales que ayudaron en la toma de las observaciones (reactivos expirados, protocolos mal interpretados o descontinuados)</p></li>
+<li class="fragment"><p>Si las anteriores no se cumplen, tener respaldo bibliográfico o experiencia de que el valor del outlier es improbable en la población sujeto de estudio.</p></li>
+</ul></li>
+<li class="fragment"><p>Muchas veces, los aparentes outliers no tienen mayor efecto en las inferencias que se realicen. Y en los casos extremos de considerar su remoción, se puede recurrir a transformaciones de los datos. <span class="fragment">En otras palabras, el último recurso es removerlos.</span></p></li>
+<li class="fragment"><p>Cuando llegado el caso, no existe otra opción, <strong>debería</strong> ser una obligación el reportar las razones para no considerarlos en el análisis <span class="fragment">(<strong>integridad científica</strong>).</span></p></li>
+</ul>
+</div>
+</section>
+<section id="cómo-remuevo-outliers" class="slide level2 smaller">
+<h2>¿Cómo remuevo outliers?</h2>
+<div>
+<ul>
+<li class="fragment"><p>La respuesta más simple: borrarlos de la base de datos antes de cargarla en R.</p></li>
+<li class="fragment"><p>Sin embargo, a veces trabajamos con tablas de datos extensas, y la remoción manual puede ser larga, tediosa y sujeta a errores que podrían empeorar la situación.</p></li>
+<li class="fragment"><p>Para ilustrar cómo hacerlo en R, vamos a recurrir a un ejemplo más sencillo donde solo lidiemos con una variable categórica a la vez. Así, veamos únicamente al caso de las variables <code>bill_length_mm</code> y <code>species</code></p></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">boxplot</span>(bill_length_mm <span class="sc">~</span> species, <span class="at">data =</span> penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-42-1.png" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="cómo-remuevo-outliers-1" class="slide level2" data-visibility="uncounted" data-autoanimate="true">
+<h2>¿Cómo remuevo outliers?</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb26" data-code-line-numbers="1|2|3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>outliers <span class="ot">&lt;-</span> <span class="fu">boxplot</span>(bill_length_mm <span class="sc">~</span> species, <span class="at">data =</span> sub_penguins, <span class="at">plot =</span> F)<span class="sc">$</span>out</span>
+<span id="cb26-2"><a href="#cb26-2"></a>x <span class="ot">&lt;-</span> sub_penguins</span>
+<span id="cb26-3"><a href="#cb26-3"></a>x <span class="ot">&lt;-</span> x[<span class="sc">-</span><span class="fu">which</span>(x<span class="sc">$</span>bill_length_mm <span class="sc">%in%</span> outliers), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="cómo-remuevo-outliers-2" class="slide level2" data-visibility="uncounted" data-autoanimate="true">
+<h2>¿Cómo remuevo outliers?</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>outliers <span class="ot">&lt;-</span> <span class="fu">boxplot</span>(bill_length_mm <span class="sc">~</span> species, <span class="at">data =</span> sub_penguins, <span class="at">plot =</span> F)<span class="sc">$</span>out</span>
+<span id="cb27-2"><a href="#cb27-2"></a>x <span class="ot">&lt;-</span> sub_penguins</span>
+<span id="cb27-3"><a href="#cb27-3"></a>x <span class="ot">&lt;-</span> x[<span class="sc">-</span><span class="fu">which</span>(x<span class="sc">$</span>bill_length_mm <span class="sc">%in%</span> outliers), ]</span>
+<span id="cb27-4"><a href="#cb27-4"></a><span class="fu">boxplot</span>(bill_length_mm <span class="sc">~</span> species, <span class="at">data =</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="index_files/figure-revealjs/unnamed-chunk-44-1.png" width="480" class="r-stretch quarto-figure-center"></section>
+<section id="relaciones-lineales" class="slide level2 smaller">
+<h2>Relaciones lineales</h2>
+<div>
+<ul>
+<li class="fragment"><p>El dar un vistazo a relaciones lineales entre variables continuas también nos puede dar una idea de la presencia de outliers.</p></li>
+<li class="fragment"><p>Adicionalmente, nos permite visualizar arreglos/patrones en los datos que responden a la influencia de variables de agrupación (en el ejemplo de los pingüinos ya vimos que las especies y las islas determinan algún tipo de arreglo).</p></li>
+<li class="fragment"><p>También nos dan una idea de las correlaciones entre las variables. Esto es de mayor importancia en los casos que tenemos en mente llevar a cabo análisis multivariables.</p></li>
+<li class="fragment"><p>Por ejemplo, en análisis de covarianza (cuando una o más variables explanatorias son continuas), no tiene sentido el incluir variables altamente correlacionadas entre sí.</p></li>
+<li class="fragment"><p>Para esto, la forma más sencilla es llevar a cabo gráficos de dispersión para tantos pares posibles de combinaciones de variables continuas tengamos.</p></li>
+<li class="fragment"><p>Esto obviamente sería tedioso y propenso a errores si lo llevamos a cabo de manera manual.</p></li>
+<li class="fragment"><p>Afortunadamente R nos ofrece varias formas de llevar a cabo matrices de gráficos de dispersión</p></li>
+</ul>
+</div>
+</section>
+<section id="matrices-de-dispersión-en-r-base" class="slide level2" data-visibility="uncounted">
+<h2>Matrices de dispersión en R base</h2>
+<div class="panel-tabset">
+<ul id="tabset-16" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-16-1">Código</a></li><li><a href="#tabset-16-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-16-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb28" data-code-line-numbers="1-4|5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>matriz_penguins <span class="ot">&lt;-</span> penguins[,<span class="fu">c</span>(<span class="st">"bill_length_mm"</span>,</span>
+<span id="cb28-2"><a href="#cb28-2"></a>                               <span class="st">"bill_depth_mm"</span>,</span>
+<span id="cb28-3"><a href="#cb28-3"></a>                               <span class="st">"flipper_length_mm"</span>,</span>
+<span id="cb28-4"><a href="#cb28-4"></a>                               <span class="st">"body_mass_g"</span>)]</span>
+<span id="cb28-5"><a href="#cb28-5"></a><span class="fu">pairs</span>(matriz_penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-16-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-46-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="matrices-de-dispersión-en-ggplot2" class="slide level2" data-visibility="uncounted">
+<h2>Matrices de dispersión en <code>ggplot2</code></h2>
+<div class="panel-tabset">
+<ul id="tabset-17" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-17-1">Código</a></li><li><a href="#tabset-17-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-17-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb29" data-code-line-numbers="1|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb29-2"><a href="#cb29-2"></a><span class="fu">ggpairs</span>(matriz_penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-17-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-48-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="histogramas" class="slide level2">
+<h2>Histogramas</h2>
+<div>
+<ul>
+<li class="fragment"><p>Un histograma es un gráfico estadístico que divide una variable continua en un determinado número de rangos y luego cuenta el número de veces que los datos caen en cada uno de ellos para producir una barra por rango.</p></li>
+<li class="fragment"><p>Sirve como un diagnóstico de la distribución de una muestra.</p></li>
+<li class="fragment"><p>Desde la perspectiva del AED, nos da una idea visual de si las variables se alejan de la normalidad.</p>
+<ul>
+<li class="fragment"><p>Esto último podría dar indicaciones de si es necesaria una transformación.</p></li>
+<li class="fragment"><p>¡Pero!… no es recomendable empezar transformando variables directamente hasta no conducir un análisis formal.</p></li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="histogramas-en-r-base-y-ggplot2" class="slide level2 scrollable">
+<h2>Histogramas en R base y <code>ggplot2</code></h2>
+<div class="columns">
+<div class="column fragment" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">hist</span>(penguins<span class="sc">$</span>bill_length_mm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-49-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column fragment" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">hist</span>(penguins<span class="sc">$</span>bill_length_mm, <span class="at">breaks =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-50-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="columns">
+<div class="column fragment" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm)) <span class="sc">+</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-51-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column fragment" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm)) <span class="sc">+</span></span>
+<span id="cb33-2"><a href="#cb33-2"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-52-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="otras-geometrías-útiles" class="title-slide slide level1 center">
+<h1>Otras geometrías útiles</h1>
+
+</section>
+<section id="gráficos-de-densidad" class="slide level2">
+<h2>Gráficos de densidad</h2>
+<div class="panel-tabset">
+<ul id="tabset-18" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-18-1">Código</a></li><li><a href="#tabset-18-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-18-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">ggplot</span>(sub_penguins,</span>
+<span id="cb34-2"><a href="#cb34-2"></a>       <span class="fu">aes</span>(<span class="at">x =</span> bill_depth_mm, <span class="at">group=</span>species, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb34-3"><a href="#cb34-3"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-18-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-54-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="gráficos-de-barras" class="slide level2">
+<h2>Gráficos de barras</h2>
+<div class="panel-tabset">
+<ul id="tabset-19" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-19-1">Código</a></li><li><a href="#tabset-19-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-19-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="fu">ggplot</span>(penguins,</span>
+<span id="cb35-2"><a href="#cb35-2"></a>       <span class="fu">aes</span>(<span class="at">x =</span> species)) <span class="sc">+</span></span>
+<span id="cb35-3"><a href="#cb35-3"></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-19-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-56-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="gráficos-de-barras-apiladas" class="slide level2">
+<h2>Gráficos de barras apiladas</h2>
+<div class="panel-tabset">
+<ul id="tabset-20" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-20-1">Código</a></li><li><a href="#tabset-20-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-20-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="fu">ggplot</span>(penguins,</span>
+<span id="cb36-2"><a href="#cb36-2"></a>       <span class="fu">aes</span>(<span class="at">x =</span> island,</span>
+<span id="cb36-3"><a href="#cb36-3"></a>           <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb36-4"><a href="#cb36-4"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"stack"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-20-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-58-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="gráficos-de-líneas" class="slide level2">
+<h2>Gráficos de líneas</h2>
+<div class="panel-tabset">
+<ul id="tabset-21" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-21-1">Código</a></li><li><a href="#tabset-21-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-21-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="fu">ggplot</span>(rot_berlin,</span>
+<span id="cb37-2"><a href="#cb37-2"></a>       <span class="fu">aes</span>(<span class="at">x =</span> date,</span>
+<span id="cb37-3"><a href="#cb37-3"></a>           <span class="at">y =</span> cases)) <span class="sc">+</span></span>
+<span id="cb37-4"><a href="#cb37-4"></a>  <span class="fu">geom_line</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-21-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-61-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="gráficos-de-líneas-con-estadísticos-descriptivos" class="slide level2">
+<h2>Gráficos de líneas con estadísticos descriptivos</h2>
+<div class="panel-tabset">
+<ul id="tabset-22" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-22-1">Código</a></li><li><a href="#tabset-22-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-22-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb38-2"><a href="#cb38-2"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb38-3"><a href="#cb38-3"></a></span>
+<span id="cb38-4"><a href="#cb38-4"></a>rot_berlin<span class="sc">$</span>mes <span class="ot">&lt;-</span> <span class="fu">month</span>(rot_berlin<span class="sc">$</span>date)</span>
+<span id="cb38-5"><a href="#cb38-5"></a>rot_berlin<span class="sc">$</span>year <span class="ot">&lt;-</span> <span class="fu">year</span>(rot_berlin<span class="sc">$</span>date)</span>
+<span id="cb38-6"><a href="#cb38-6"></a>temp_berlin <span class="ot">&lt;-</span> rot_berlin <span class="sc">%&gt;%</span></span>
+<span id="cb38-7"><a href="#cb38-7"></a>  <span class="fu">group_by</span>(mes) <span class="sc">%&gt;%</span></span>
+<span id="cb38-8"><a href="#cb38-8"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb38-9"><a href="#cb38-9"></a>            <span class="at">media =</span> <span class="fu">mean</span>(TMK),</span>
+<span id="cb38-10"><a href="#cb38-10"></a>            <span class="at">desv =</span> <span class="fu">sd</span>(TMK),</span>
+<span id="cb38-11"><a href="#cb38-11"></a>            <span class="at">s.err =</span> desv<span class="sc">/</span><span class="fu">sqrt</span>(n)) </span>
+<span id="cb38-12"><a href="#cb38-12"></a></span>
+<span id="cb38-13"><a href="#cb38-13"></a>grafico3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(temp_berlin,</span>
+<span id="cb38-14"><a href="#cb38-14"></a>       <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(mes),</span>
+<span id="cb38-15"><a href="#cb38-15"></a>           <span class="at">y =</span> media,</span>
+<span id="cb38-16"><a href="#cb38-16"></a>           <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb38-17"><a href="#cb38-17"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb38-18"><a href="#cb38-18"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb38-19"><a href="#cb38-19"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> media <span class="sc">-</span> s.err,</span>
+<span id="cb38-20"><a href="#cb38-20"></a>                    <span class="at">ymax =</span> media <span class="sc">+</span> s.err),</span>
+<span id="cb38-21"><a href="#cb38-21"></a>                <span class="at">width =</span> .<span class="dv">3</span>)</span>
+<span id="cb38-22"><a href="#cb38-22"></a>grafico3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-22-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-63-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="combinando-y-exportando-gráficos-de-ggplot2" class="slide level2">
+<h2>Combinando y exportando gráficos de <code>ggplot2</code></h2>
+<div>
+<ul>
+<li class="fragment"><p>Un reto que hemos todos encontrado alguna vez es el de combinar varios gráficos en uno solo.</p></li>
+<li class="fragment"><p>Esto requiere paciencia y el uso de software externo (llámese CorelDraw, Adobe Illustrator, PowerPoint o incluso Paint).</p></li>
+<li class="fragment"><p>La librería complementaria <code>patchwork</code> nos permite combinar gráficos de <code>ggplot2</code> de una manera sencilla y rápida.</p></li>
+<li class="fragment"><p>Además, gracias a la función <code>ggsave</code> de <code>ggplot2</code> podemos exportar fácilmente nuestros gráficos sin requerir (ojalá) a la ayuda de software externo para dar retoques finales a estos gráficos.</p></li>
+</ul>
+</div>
+</section>
+<section id="combinando-gráficos-con-patchwork" class="slide level2">
+<h2>Combinando gráficos con <code>patchwork</code></h2>
+<div class="panel-tabset">
+<ul id="tabset-23" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-23-1">Código</a></li><li><a href="#tabset-23-2">Gráfico</a></li></ul>
+<div class="tab-content">
+<div id="tabset-23-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb39-2"><a href="#cb39-2"></a>graficofinal <span class="ot">&lt;-</span> (grafico1 <span class="sc">|</span> grafico2) <span class="sc">/</span> grafico3</span>
+<span id="cb39-3"><a href="#cb39-3"></a>graficofinal <span class="sc">+</span> <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">'A'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-23-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-65-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<p>Para más información de las funciones y utilidades de <code>patchwork</code> puedes visitar la <a href="https://patchwork.data-imaginist.com/" target="_blank">página oficial</a> con su documentación y ejemplos.</p>
+</div>
+</section>
+<section id="exportando-gráficos-de-ggplot" class="slide level2 scrollable">
+<h2>Exportando gráficos de <code>ggplot</code></h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>graficofinal_estavezsi <span class="ot">&lt;-</span> graficofinal <span class="sc">+</span> <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">'A'</span>)</span>
+<span id="cb40-2"><a href="#cb40-2"></a><span class="fu">ggsave</span>(<span class="st">"grafico.png"</span>, <span class="at">plot =</span> graficofinal_estavezsi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+<img data-src="images/out.png" class="r-stretch quarto-figure-center"></section>
+<section id="más-exploración" class="slide level2">
+<h2>Más exploración</h2>
+<div>
+<ul>
+<li class="fragment"><p>Lo que hemos revisado hasta el momento, son las técnicas más frecuentemente usadas para AED.</p></li>
+<li class="fragment"><p>Sin embargo, existen librerías de R que permiten también hacer AED de una manera automática y más accesible.</p></li>
+<li class="fragment"><p>Como ejemplos, haremos un enfoque en dos librerías que hacen uso de Shiny para brindar esta experiencia al usuario. Estas son <code>explore</code> y <code>dataxray</code></p></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a><span class="fu">library</span>(explore)</span>
+<span id="cb41-2"><a href="#cb41-2"></a><span class="fu">explore</span>(penguins)</span>
+<span id="cb41-3"><a href="#cb41-3"></a></span>
+<span id="cb41-4"><a href="#cb41-4"></a><span class="fu">install.packages</span>(<span class="st">"devtools"</span>)</span>
+<span id="cb41-5"><a href="#cb41-5"></a><span class="fu">install.packages</span>(<span class="st">"flexdashboard"</span>)</span>
+<span id="cb41-6"><a href="#cb41-6"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"agstn/dataxray"</span>)</span>
+<span id="cb41-7"><a href="#cb41-7"></a><span class="fu">library</span>(dataxray)</span>
+<span id="cb41-8"><a href="#cb41-8"></a><span class="fu">report_xray</span>(<span class="at">data =</span> penguins, <span class="at">data_name =</span> <span class="st">'penguins'</span>, <span class="at">study =</span> <span class="st">"ggplot2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="funciones-y-librerías-en-esta-sesión" class="slide level2 smaller scrollable">
+<h2>Funciones y librerías en esta sesión</h2>
+<p><strong>Funciones</strong></p>
+<ul>
+<li><code>seq</code> genera una secuencia de números.</li>
+</ul>
+<p><strong>Librerías</strong></p>
+<ul>
+<li><p><code>palmerpenguins</code></p></li>
+<li><p><code>ggplot2</code> es un paquete con una basta cantidad de funciones para llevar a cabo gráficos.</p>
+<ul>
+<li><p><code>ggplot</code> es la función que da inicio a todo objeto de <code>ggplot2</code>.</p></li>
+<li><p><code>geom_</code> es el prefijo de todas las geometrías de <code>ggplot2</code></p></li>
+</ul></li>
+<li><p><code>viridis</code> es un paquete que ofrece 8 paletas de color basadas en secuencias de azul y amarillo (amigable con personas daltónicas).</p></li>
+<li><p><code>ggsci</code> ofrece paletas de color basadas en journals y series de televisión.</p></li>
+<li><p><code>finalfit</code> nos permite realizar exploración de los patrones de datos perdidos.</p></li>
+<li><p><code>GGally</code> es un paquete con funcionalidades extras basadas en <code>ggplot2</code>. Aquí nos enfocamos en su uso para realizar gráficos de matrices de variables.</p></li>
+</ul>
 
 
 <img src="images/logo.jpeg" class="slide-logo r-stretch"><div class="footer footer-default">
 
 </div>
-</section>
+</section></section>
     </div>
   </div>
 
@@ -562,6 +1897,44 @@ Mauricio Moreno, PhD
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
