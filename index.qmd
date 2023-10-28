@@ -637,7 +637,6 @@ pq1
 
 ```
 
-
 ::: columns
 ::: {.column width="50%"}
 2)  El siguiente gráfico
@@ -645,41 +644,37 @@ pq1
 ```{r echo=F, eval=T, error=T, fig.align = 'center', fig.width=4}
 ggplot(iris, aes(y=Petal.Width)) + geom_boxplot(aes(fill=Species))
 ```
-
 :::
 
 ::: {.column width="50%"}
 Es producido por el(los) código(s):
 
-a)
+a)  
 
 ```{r echo=T, eval=F, error=T, fig.align = 'center', fig.width=5}
 ggplot(iris, aes(y=Petal.Width)) + 
   geom_boxplot(aes(fill=Species))
 ```
 
-b)
+b)  
 
 ```{r echo=T, eval=F, error=T, fig.align = 'center', fig.width=5}
 ggplot(iris, aes(y=Petal.Width, color=Species)) + 
   geom_boxplot()
 ```
 
-c)
+c)  
 
 ```{r echo=T, eval=F, error=T, fig.align = 'center', fig.width=5}
 ggplot(iris, aes(y=Petal.Width, fill=Species)) + 
   geom_boxplot()
 ```
-
 :::
 :::
-
-
 
 ::: columns
 ::: {.column width="50%"}
-3)    Para obtener el siguiente gráfico:
+3)  Para obtener el siguiente gráfico:
 
 ```{r echo=F, eval=T, error=T, fig.align = 'center', fig.height= 5}
 library(viridis)
@@ -707,22 +702,19 @@ ggplot(data = penguins,
 :::
 :::
 
-
 por:
 
-a) `scale_color_viridis(option = "G")`
+a)  `scale_color_viridis(option = "G")`
 
-b) `scale_color_viridis(discrete = T, option = "G")`
+b)  `scale_color_viridis(discrete = T, option = "G")`
 
 c)  `scale_color_viridis(discrete = T, option = "H")`
-
 
 # Principios de Análisis Exploratorio de Datos (AED)
 
 ## Datos perdidos {.smaller}
 
 ::: incremental
-
 -   La perdida de datos es común en casi todo experimento, sobre todo en aquellos de naturaleza observacional.
 
 -   El primer paso que recomiendo en un análisis exploratorio, es checar si existen o no datos perdidos.
@@ -732,7 +724,7 @@ c)  `scale_color_viridis(discrete = T, option = "H")`
 -   Únicamente cuando la severidad de la pérdida de datos es muy grande aconsejo a recurrir a estas dos opciones (en orden de complejidad estadística de menor a mayor)
 
     -   Repetir el experimento
-    
+
     -   Llevar a cabo imputación de datos
 
 -   En este curso vamos a limitarnos a usar métodos de análisis corregidos cuando estemos ante la presencia de datos perdidos ya que la imputación de datos requiere de conocimientos teóricos extensos acerca de los tipos de mecanismos de pérdida de datos.
@@ -740,10 +732,7 @@ c)  `scale_color_viridis(discrete = T, option = "H")`
 -   **EVITAR** el reemplazar los valores perdidos por ceros. Esta suele ser una práctica más o menos común pero que introduce mayores problemas que los que "soluciona".
 
 -   En resumen, no hay que temer el contar con datos perdidos, siempre y cuando estos no sean masivos.
-
 :::
-
-
 
 ## Datos perdidos {visibility="uncounted" autoanimate="true"}
 
@@ -778,7 +767,6 @@ missing_plot(penguins)
 ## Datos perdidos {visibility="uncounted"}
 
 ::: panel-tabset
-
 ### Código
 
 ```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=4}
@@ -823,13 +811,11 @@ ggplot(sub_penguins,
        color = "Especie") +
   theme_bw()
 ```
-
 :::
 
 ## Observaciones anormales (outliers) {.smaller}
 
 ::: incremental
-
 -   Un outlier puede definirse como aquella observación que dista considerablemente de la **mediana** de una población.
 
 -   Pueden deberse a errores en la toma de mediciones [o valores que realmente existen.]{.fragment}
@@ -837,7 +823,6 @@ ggplot(sub_penguins,
 -   En estadística, una entre varias definiciones de outlier es dada de acuerdo al criterio del Rango Intercuartílico (RIC o *IQR* en inglés).
 
 -   Este criterio establece que toda observación por encima del tercer cuartil + 1.5 veces el RIC o por debajo del primer cuartil - 1.5 veces el RIC es considerada como outlier.
-
 :::
 
 . . .
@@ -847,11 +832,9 @@ I=\left[C_{0.25}-1.5 \times RIC ,\,C_{0.75}+1.5 \times RIC \right]
 $$
 
 ::: incremental
-
 -   Donde el RIC es sencillamente la diferencia entre el primer y el tercer cuartil de una muestra.
 
 -   Este método es precisamente la base para los gráficos de caja y bigote.
-
 :::
 
 ## Gráficos de caja y bigote
@@ -859,21 +842,16 @@ $$
 ![](images/box.jpg){fig-align="center"}
 
 ::: incremental
-
 -   Un gráfico de caja y bigote es el resumen de 5 cantidades de importancia para explorar una distribución: [la mediana, los cuantiles 1 y 3 y los valores mínimo y máximo de una distribución en función del RIC]{.fragment}
-
 :::
 
 ::: footer
-
 Imagen de autoría de [Michael Galarnyk](https://builtin.com/data-science/boxplot){target="_blank"}
-
 :::
 
 ## Gráficos de caja y bigote en R base
 
 ::: panel-tabset
-
 ### Código
 
 ```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=4}
@@ -896,13 +874,11 @@ boxplot(bill_depth_mm ~ species, data = penguins)
 plot.new()
 par(mfrow = c(1, 1))
 ```
-
 :::
 
 ## Gráficos de caja y bigote en R base {visibility="uncounted"}
 
 ::: incremental
-
 -   Los gráficos base de R son de rápida implementación.
 
 -   Generalmente sirven para dar vistazos rápidos a los datos.
@@ -910,13 +886,11 @@ par(mfrow = c(1, 1))
 -   Pueden por supuesto ser usados para productos finales de publicación, pero la sintaxis para dar formato y exportarlos es un tanto confusa (a mi parecer).
 
 -   Tienen sus limitaciones, [**¿qué tal si en este caso me hubiese gustado realizar un gráfico por facetas para ver más variables categóricas al mismo tiempo?**]{.fragment}
-
 :::
 
 ## Gráficos de caja y bigote en `ggplot2`
 
 ::: panel-tabset
-
 ### Código
 
 ```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=4}
@@ -941,39 +915,35 @@ ggplot(sub_penguins,
   facet_grid(~sex~island) + 
   theme(legend.position = "none")
 ```
-
 :::
 
 ## Y ahora, ¿qué hago con los outliers?
 
 ![](images/gatito.jpg){fig-align="center"}
 
-## Y ahora, ¿qué hago con los outliers? {visibility="uncounted" .smaller}
+## Y ahora, ¿qué hago con los outliers? {.smaller visibility="uncounted"}
 
 ::: incremental
-
 -   El remover outliers no se aconseja antes de llevar a cabo análisis de inferencia estadística.
 
 -   Para remover outliers antes de analizar propiamente los datos, se necesita tener certeza de las razones por las cuales estos fueron registrados:
 
     -   Fallas comprobadas en el equipo de medición
-    
+
     -   Errores al escribir las mediciones en el medio de registro (libro de laboratorio, base de datos)
-    
+
     -   Falencias en las técnicas, metodologías o materiales que ayudaron en la toma de las observaciones (reactivos expirados, protocolos mal interpretados o descontinuados)
-    
+
     -   Si las anteriores no se cumplen, tener respaldo bibliográfico o experiencia de que el valor del outlier es improbable en la población sujeto de estudio.
-    
+
 -   Muchas veces, los aparentes outliers no tienen mayor efecto en las inferencias que se realicen. Y en los casos extremos de considerar su remoción, se puede recurrir a transformaciones de los datos. [En otras palabras, el último recurso es removerlos.]{.fragment}
 
--    Cuando llegado el caso, no existe otra opción, **debería** ser una obligación el reportar las razones para no considerarlos en el análisis [(**integridad científica**).]{.fragment}
-
+-   Cuando llegado el caso, no existe otra opción, **debería** ser una obligación el reportar las razones para no considerarlos en el análisis [(**integridad científica**).]{.fragment}
 :::
 
 ## ¿Cómo remuevo outliers? {.smaller}
 
 ::: incremental
-
 -   La respuesta más simple: borrarlos de la base de datos antes de cargarla en R.
 
 -   Sin embargo, a veces trabajamos con tablas de datos extensas, y la remoción manual puede ser larga, tediosa y sujeta a errores que podrían empeorar la situación.
@@ -986,7 +956,6 @@ ggplot(sub_penguins,
 ```{r echo=T, eval=T, error=T, fig.align = 'center', fig.height=4, fig.width=5}
 boxplot(bill_length_mm ~ species, data = penguins)
 ```
-
 
 ## ¿Cómo remuevo outliers? {visibility="uncounted" autoanimate="true"}
 
@@ -1006,10 +975,137 @@ x <- x[-which(x$bill_length_mm %in% outliers), ]
 boxplot(bill_length_mm ~ species, data = x)
 ```
 
+## Autoevaluación \# 8 {.smaller .scrollable}
+
+Los datos del archivo de excel "rotXLS.xlsx" que mencionamos brevemente en el segundo módulo contiene información sobre el conteo de casos de rotavirus en Berlín desde el año 2001 hasta el 2020. Las variables de esta tabla de datos son:
+
+::: columns
+::: {.column width="50%"}
+-   `date`: fecha de cierre de la toma de datos
+
+-   `cases`: número de casos de rotavirus en la semana
+
+-   `week`: semana epidemiológica
+
+-   `incidence`: número de casos/100000 habitantes
+
+-   `FM`: media diaria de velocidad del viento (m/s)
+
+-   `RSK`: media diaria de lluvia (mm)
+:::
+
+::: {.column width="50%"}
+-   `SHK_TAG`: media diaria de nieve (cm)
+
+-   `PM`: media diaria de presión atmosférica (hPa)
+
+-   `TMK`: media diaria de temperatura (°C)
+
+-   `TXK`: media diaria de temperatura máxima (°C)
+
+-   `TNK`: media diaria de temperatura mínima (°C)
+
+-   `UPM`: media diaria de humedad relativa (%)
+:::
+:::
+
+Una vez que hayamos especificado el directorio de trabajo, podemos importar esta tabla con el siguiente código:
+
+```{r echo=T, eval=T, error=T, fig.align = 'center'}
+library(readxl)                           
+rot_berlin <- read_excel("rotXLS.xlsx")
+```
+
+::: columns
+::: {.column width="50%"}
+1)  Ignorando por un momento la naturaleza longitudinal de estos datos, podemos crear un gráfico de múltiples cajas de bigotes por semana epidemiológica para el número de casos, que se vería de esta manera:
+:::
+
+::: {.column width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(rot_berlin, aes(x = week, y = cases, group = week)) +
+  geom_boxplot()
+```
+:::
+:::
+
+Con el siguiente código:
+
+a)  
+
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+ggplot(rot_berlin, aes(x = week, y = cases)) +
+  geom_boxplot()
+```
+
+b)  
+
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+ggplot(rot_berlin, aes(x = factor(week), y = cases)) +
+  geom_boxplot()
+```
+
+c)  
+
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+ggplot(rot_berlin, aes(x = week, y = cases, group = week)) +
+  geom_boxplot()
+```
+
+2)  Con lo que hemos aprendido hasta el momento, si quisiéramos identificar y remover posibles outliers, podríamos usar el siguiente código:
+
+```{r echo=T, eval=T, error=T, fig.align = 'center'}
+out_rot <- boxplot(cases ~ factor(week), data = rot_berlin, plot = F)$out
+sub_rot <- rot_berlin
+sub_rot <- sub_rot[-which(sub_rot$cases %in% out_rot), ]
+```
+
+El número de outliers detectados es:
+
+::: columns
+::: {.column width="25%"}
+a) 232
+:::
+
+::: {.column width="25%"}
+b) 323
+:::
+
+::: {.column width="25%"}
+c) 156
+:::
+
+::: {.column width="25%"}
+d) 212
+:::
+:::
+
+
+::: columns
+::: {.column width="50%"}
+3)  Mirando el gráfico de cajas y bigotes de `sub_rot`, podríamos llevar a cabo sucesivas nuevas identificaciones y remociones de outliers hasta terminar con un gráfico ya sin puntos fuera de los RIC. Teniendo en cuenta esto, cuál(es) de las siguientes afirmaciones es(son) verdadera(s)
+:::
+
+::: {.column width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(sub_rot, aes(x = week, y = cases, group = week)) +
+  geom_boxplot()
+```
+:::
+:::
+
+a) No importa cuántas veces repita el proceso, eliminar todo outlier es una buena práctica
+
+b) Al eliminar un outlier, no hay garantía que otra observación se convierta en uno. 
+
+c) Se aconsejaría remover outliers una sola vez, y continuar con los análisis.
+
+d) Parecería que el RIC no sería un criterio suficiente para remover outliers.
+
+
 ## Relaciones lineales {.smaller}
 
 ::: incremental
-
 -   El dar un vistazo a relaciones lineales entre variables continuas también nos puede dar una idea de la presencia de outliers.
 
 -   Adicionalmente, nos permite visualizar arreglos/patrones en los datos que responden a la influencia de variables de agrupación (en el ejemplo de los pingüinos ya vimos que las especies y las islas determinan algún tipo de arreglo).
@@ -1023,15 +1119,11 @@ boxplot(bill_length_mm ~ species, data = x)
 -   Esto obviamente sería tedioso y propenso a errores si lo llevamos a cabo de manera manual.
 
 -   Afortunadamente R nos ofrece varias formas de llevar a cabo matrices de gráficos de dispersión
-    
-
 :::
-
 
 ## Matrices de dispersión en R base {visibility="uncounted"}
 
 ::: panel-tabset
-
 ### Código
 
 ```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=4}
@@ -1052,14 +1144,11 @@ matriz_penguins <- penguins[,c("bill_length_mm",
                                "body_mass_g")]
 pairs(matriz_penguins)
 ```
-
 :::
-
 
 ## Matrices de dispersión en `ggplot2` {visibility="uncounted"}
 
 ::: panel-tabset
-
 ### Código
 
 ```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=4}
@@ -1074,14 +1163,11 @@ ggpairs(matriz_penguins)
 library(GGally)
 ggpairs(matriz_penguins)
 ```
-
 :::
-
 
 ## Histogramas
 
 ::: incremental
-
 -   Un histograma es un gráfico estadístico que divide una variable continua en un determinado número de rangos y luego cuenta el número de veces que los datos caen en cada uno de ellos para producir una barra por rango.
 
 -   Sirve como un diagnóstico de la distribución de una muestra.
@@ -1089,37 +1175,35 @@ ggpairs(matriz_penguins)
 -   Desde la perspectiva del AED, nos da una idea visual de si las variables se alejan de la normalidad.
 
     -   Esto último podría dar indicaciones de si es necesaria una transformación.
-    
-    -   ¡Pero!... no es recomendable empezar transformando variables directamente hasta no conducir un análisis formal.
 
+    -   ¡Pero!... no es recomendable empezar transformando variables directamente hasta no conducir un análisis formal.
 :::
 
 ## Histogramas en R base y `ggplot2` {.scrollable}
 
 ::: columns
-::: {.column width="50%" .fragment}
+::: {.column .fragment width="50%"}
 ```{r echo=T, eval=T, error=T, fig.align = 'center', fig.height=4}
 hist(penguins$bill_length_mm)
 ```
 :::
 
-::: {.column width="50%" .fragment}
+::: {.column .fragment width="50%"}
 ```{r echo=T, eval=T, error=T, fig.align = 'center', fig.height=4}
 hist(penguins$bill_length_mm, breaks = 50)
 ```
 :::
 :::
 
-
 ::: columns
-::: {.column width="50%" .fragment}
+::: {.column .fragment width="50%"}
 ```{r echo=T, eval=T, error=T, fig.align = 'center', fig.height=4}
 ggplot(penguins, aes(x = bill_length_mm)) +
   geom_histogram()
 ```
 :::
 
-::: {.column width="50%" .fragment}
+::: {.column .fragment width="50%"}
 ```{r echo=T, eval=T, error=T, fig.align = 'center', fig.height=4}
 ggplot(penguins, aes(x = bill_length_mm)) +
   geom_histogram(bins = 50)
@@ -1132,7 +1216,6 @@ ggplot(penguins, aes(x = bill_length_mm)) +
 ## Gráficos de densidad
 
 ::: panel-tabset
-
 ### Código
 
 ```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=4}
@@ -1148,13 +1231,11 @@ ggplot(sub_penguins,
        aes(x = bill_depth_mm, group=species, fill = species)) +
   geom_density(alpha = 0.4)
 ```
-
 :::
 
 ## Gráficos de barras
 
 ::: panel-tabset
-
 ### Código
 
 ```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=4}
@@ -1170,13 +1251,11 @@ ggplot(sub_penguins,
        aes(x = species)) +
   geom_bar()
 ```
-
 :::
 
 ## Gráficos de barras apiladas
 
 ::: panel-tabset
-
 ### Código
 
 ```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=4}
@@ -1194,9 +1273,72 @@ ggplot(penguins,
            fill = species)) +
   geom_bar(position = "stack") 
 ```
-
 :::
 
+## Mapas de calor en R base {.smaller .scrollable}
+
+
+-   Gráfico bidimensional de datos en donde los valores son representados con colores.
+
+-   Las variables de los ejes deben ser categóricas, y la intensidad de los colores en el plano coordenado depende de la magnitud de una variable continua.
+
+::: panel-tabset
+### Código
+
+```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=4}
+mapa_calor_base <- as.matrix(mtcars)
+heatmap(mapa_calor_base)
+```
+
+### Gráfico
+
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+mapa_calor_base <- as.matrix(mtcars)
+heatmap(mapa_calor_base)
+```
+:::
+
+
+## Mapas de calor con `heatmaply` {.smaller .scrollable}
+
+
+-   Gráfico bidimensional de datos en donde los valores son representados con colores.
+
+-   Las variables de los ejes deben ser categóricas, y la intensidad de los colores en el plano coordenado depende de la magnitud de una variable continua.
+
+::: panel-tabset
+### Código
+
+```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=4}
+install.packages("heatmaply", dependencies = T)
+library(heatmaply)
+heatmaply(
+  mtcars,
+  scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
+    low = "blue", 
+    high = "red", 
+    midpoint = 200, 
+    limits = c(0, 500)
+  )
+)
+```
+
+### Gráfico
+
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+library(heatmaply)
+library(htmlwidgets)
+heatmaply(
+  mtcars,
+  scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
+    low = "blue",
+    high = "red",
+    midpoint = 200,
+    limits = c(0, 500)
+  )
+)
+```
+:::
 
 ## Gráficos de líneas
 
@@ -1206,7 +1348,6 @@ rot_berlin <- read_excel("rotXLS.xlsx")
 ```
 
 ::: panel-tabset
-
 ### Código
 
 ```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=4}
@@ -1224,14 +1365,11 @@ ggplot(rot_berlin,
            y = cases)) +
   geom_line() 
 ```
-
 :::
-
 
 ## Gráficos de líneas con estadísticos descriptivos
 
 ::: panel-tabset
-
 ### Código
 
 ```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=4}
@@ -1285,27 +1423,23 @@ grafico3 <- ggplot(temp_berlin,
                 width = .3)
 grafico3
 ```
-
 :::
 
 ## Combinando y exportando gráficos de `ggplot2`
 
 ::: incremental
-
 -   Un reto que hemos todos encontrado alguna vez es el de combinar varios gráficos en uno solo.
 
 -   Esto requiere paciencia y el uso de software externo (llámese CorelDraw, Adobe Illustrator, PowerPoint o incluso Paint).
 
 -   La librería complementaria `patchwork` nos permite combinar gráficos de `ggplot2` de una manera sencilla y rápida.
 
--   Además, gracias a la función `ggsave` de `ggplot2` podemos exportar fácilmente nuestros gráficos sin requerir (ojalá) a la ayuda de software externo para dar retoques finales a estos gráficos. 
-
+-   Además, gracias a la función `ggsave` de `ggplot2` podemos exportar fácilmente nuestros gráficos sin requerir (ojalá) a la ayuda de software externo para dar retoques finales a estos gráficos.
 :::
 
 ## Combinando gráficos con `patchwork`
 
 ::: panel-tabset
-
 ### Código
 
 ```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=4}
@@ -1321,7 +1455,6 @@ library(patchwork)
 graficofinal <- (grafico1 | grafico2) / grafico3
 graficofinal + plot_annotation(tag_levels = 'A')
 ```
-
 :::
 
 ::: footer
@@ -1335,19 +1468,26 @@ graficofinal_estavezsi <- graficofinal + plot_annotation(tag_levels = 'A')
 ggsave("grafico.png", plot = graficofinal_estavezsi)
 ```
 
-![](images/out.png){fig-align="center"}
+![](images/out.png){fig-align="center"} 
 
+# Antes de terminar...
+
+## Anatomía de un `ggplot`
+
+![](images/elements.png){fig-align="center"}
+
+::: footer
+Imagen tomada de [aquí](https://bookdown.org/alapo/learnr/){target="_blank"}
+:::
 
 ## Más exploración
 
 ::: incremental
-
 -   Lo que hemos revisado hasta el momento, son las técnicas más frecuentemente usadas para AED.
 
 -   Sin embargo, existen librerías de R que permiten también hacer AED de una manera automática y más accesible.
 
 -   Como ejemplos, haremos un enfoque en dos librerías que hacen uso de Shiny para brindar esta experiencia al usuario. Estas son `explore` y `dataxray`
-
 :::
 
 . . .
@@ -1371,6 +1511,14 @@ report_xray(data = penguins, data_name = 'penguins', study = "ggplot2")
 
 -   `na.omit` remueve observaciones perdidas.
 
+-   `plot` función de ploteo de R base. Produce diversos gráficos, entre ellos: dispersión, líneas y caja y bigotes.
+
+-   `par` es una función que permite configurar parámetros gráficos de R base. Su uso más común es para setear los cuadrantes del gráfico.
+
+-   `plot.new` produce un gráfico completamente en blanco en R base. Es útil para rellenar cuadrantes de un gráfico (cuando el número de cuadrantes es par y los gráficos a distribuir por cuadrante es impar).
+
+-   `::` operando de localización de objetos. Se lo utiliza para llamar objetos de librerías sin necesidad de cargarlas en la sesión.
+
 **Librerías**
 
 -   `palmerpenguins`
@@ -1379,7 +1527,9 @@ report_xray(data = penguins, data_name = 'penguins', study = "ggplot2")
 
     -   `ggplot` es la función que da inicio a todo objeto de `ggplot2`.
 
-    -   `geom_` es el prefijo de todas las geometrías de `ggplot2`
+    -   `geom_` es el prefijo de todas las geometrías de `ggplot2`.
+    
+    -   `ggsave` permite exportar gráficos de ggplot a diferentes formatos como .png, .jpg, .pdf.
 
 -   `viridis` es un paquete que ofrece 8 paletas de color basadas en secuencias de azul y amarillo (amigable con personas daltónicas).
 

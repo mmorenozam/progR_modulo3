@@ -151,7 +151,7 @@
     "href": "index.html#funciones-y-librerías-en-esta-sesión",
     "title": "Módulo 3: Visualización de datos con ggplot2",
     "section": "Funciones y librerías en esta sesión",
-    "text": "Funciones y librerías en esta sesión\nFunciones\n\nseq genera una secuencia de números.\nna.omit remueve observaciones perdidas.\n\nLibrerías\n\npalmerpenguins\nggplot2 es un paquete con una basta cantidad de funciones para llevar a cabo gráficos.\n\nggplot es la función que da inicio a todo objeto de ggplot2.\ngeom_ es el prefijo de todas las geometrías de ggplot2\n\nviridis es un paquete que ofrece 8 paletas de color basadas en secuencias de azul y amarillo (amigable con personas daltónicas).\nggsci ofrece paletas de color basadas en journals y series de televisión.\nfinalfit nos permite realizar exploración de los patrones de datos perdidos.\nGGally es un paquete con funcionalidades extras basadas en ggplot2. Aquí nos enfocamos en su uso para realizar gráficos de matrices de variables."
+    "text": "Funciones y librerías en esta sesión\nFunciones\n\nseq genera una secuencia de números.\nna.omit remueve observaciones perdidas.\nplot función de ploteo de R base. Produce diversos gráficos, entre ellos: dispersión, líneas y caja y bigotes.\npar es una función que permite configurar parámetros gráficos de R base. Su uso más común es para setear los cuadrantes del gráfico.\nplot.new produce un gráfico completamente en blanco en R base. Es útil para rellenar cuadrantes de un gráfico (cuando el número de cuadrantes es par y los gráficos a distribuir por cuadrante es impar).\n:: operando de localización de objetos. Se lo utiliza para llamar objetos de librerías sin necesidad de cargarlas en la sesión.\n\nLibrerías\n\npalmerpenguins\nggplot2 es un paquete con una basta cantidad de funciones para llevar a cabo gráficos.\n\nggplot es la función que da inicio a todo objeto de ggplot2.\ngeom_ es el prefijo de todas las geometrías de ggplot2.\nggsave permite exportar gráficos de ggplot a diferentes formatos como .png, .jpg, .pdf.\n\nviridis es un paquete que ofrece 8 paletas de color basadas en secuencias de azul y amarillo (amigable con personas daltónicas).\nggsci ofrece paletas de color basadas en journals y series de televisión.\nfinalfit nos permite realizar exploración de los patrones de datos perdidos.\nGGally es un paquete con funcionalidades extras basadas en ggplot2. Aquí nos enfocamos en su uso para realizar gráficos de matrices de variables."
   },
   {
     "objectID": "index.html#datos-perdidos",
@@ -362,5 +362,33 @@
     "title": "Módulo 3: Visualización de datos con ggplot2",
     "section": "Más exploración",
     "text": "Más exploración\n\n\nLo que hemos revisado hasta el momento, son las técnicas más frecuentemente usadas para AED.\nSin embargo, existen librerías de R que permiten también hacer AED de una manera automática y más accesible.\nComo ejemplos, haremos un enfoque en dos librerías que hacen uso de Shiny para brindar esta experiencia al usuario. Estas son explore y dataxray\n\n\n\n\nlibrary(explore)\nexplore(penguins)\n\ninstall.packages(\"devtools\")\ninstall.packages(\"flexdashboard\")\ndevtools::install_github(\"agstn/dataxray\")\nlibrary(dataxray)\nreport_xray(data = penguins, data_name = 'penguins', study = \"ggplot2\")"
+  },
+  {
+    "objectID": "index.html#autoevaluación-8",
+    "href": "index.html#autoevaluación-8",
+    "title": "Módulo 3: Visualización de datos con ggplot2",
+    "section": "Autoevaluación # 8",
+    "text": "Autoevaluación # 8\nLos datos del archivo de excel “rotXLS.xlsx” que mencionamos brevemente en el segundo módulo contiene información sobre el conteo de casos de rotavirus en Berlín desde el año 2001 hasta el 2020. Las variables de esta tabla de datos son:\n\n\n\ndate: fecha de cierre de la toma de datos\ncases: número de casos de rotavirus en la semana\nweek: semana epidemiológica\nincidence: número de casos/100000 habitantes\nFM: media diaria de velocidad del viento (m/s)\nRSK: media diaria de lluvia (mm)\n\n\n\nSHK_TAG: media diaria de nieve (cm)\nPM: media diaria de presión atmosférica (hPa)\nTMK: media diaria de temperatura (°C)\nTXK: media diaria de temperatura máxima (°C)\nTNK: media diaria de temperatura mínima (°C)\nUPM: media diaria de humedad relativa (%)\n\n\n\nUna vez que hayamos especificado el directorio de trabajo, podemos importar esta tabla con el siguiente código:\n\nlibrary(readxl)                           \nrot_berlin &lt;- read_excel(\"rotXLS.xlsx\")\n\n\n\n\nIgnorando por un momento la naturaleza longitudinal de estos datos, podemos crear un gráfico de múltiples cajas de bigotes por semana epidemiológica para el número de casos, que se vería de esta manera:\n\n\n\n\n\n\n\n\n\n\n\n\n\nCon el siguiente código:\n\n\n\n\nggplot(rot_berlin, aes(x = week, y = cases)) +\n  geom_boxplot()\n\n\n\n\n\nggplot(rot_berlin, aes(x = factor(week), y = cases)) +\n  geom_boxplot()\n\n\n\n\n\nggplot(rot_berlin, aes(x = week, y = cases, group = week)) +\n  geom_boxplot()\n\n\nCon lo que hemos aprendido hasta el momento, si quisiéramos identificar y remover posibles outliers, podríamos usar el siguiente código:\n\n\nout_rot &lt;- boxplot(cases ~ factor(week), data = rot_berlin, plot = F)$out\nsub_rot &lt;- rot_berlin\nsub_rot &lt;- sub_rot[-which(sub_rot$cases %in% out_rot), ]\n\nEl número de outliers detectados es:\n\n\n\n232\n\n\n\n323\n\n\n\n156\n\n\n\n212\n\n\n\n\n\n\nMirando el gráfico de cajas y bigotes de sub_rot, podríamos llevar a cabo sucesivas nuevas identificaciones y remociones de outliers hasta terminar con un gráfico ya sin puntos fuera de los RIC. Teniendo en cuenta esto, cuál(es) de las siguientes afirmaciones es(son) verdadera(s)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo importa cuántas veces repita el proceso, eliminar todo outlier es una buena práctica\nAl eliminar un outlier, no hay garantía que otra observación se convierta en uno.\nSe aconsejaría remover outliers una sola vez, y continuar con los análisis.\nParecería que el RIC no sería un criterio suficiente para remover outliers."
+  },
+  {
+    "objectID": "index.html#anatomía-de-un-ggplot",
+    "href": "index.html#anatomía-de-un-ggplot",
+    "title": "Módulo 3: Visualización de datos con ggplot2",
+    "section": "Anatomía de un ggplot",
+    "text": "Anatomía de un ggplot\n\n\nImagen tomada de aquí"
+  },
+  {
+    "objectID": "index.html#mapas-de-calor-en-r-base",
+    "href": "index.html#mapas-de-calor-en-r-base",
+    "title": "Módulo 3: Visualización de datos con ggplot2",
+    "section": "Mapas de calor en R base",
+    "text": "Mapas de calor en R base\n\nGráfico bidimensional de datos en donde los valores son representados con colores.\nLas variables de los ejes deben ser categóricas, y la intensidad de los colores en el plano coordenado depende de la magnitud de una variable continua.\n\n\nCódigoGráfico\n\n\n\nmapa_calor_base &lt;- as.matrix(mtcars)\nheatmap(mapa_calor_base)"
+  },
+  {
+    "objectID": "index.html#mapas-de-calor-con-heatmaply",
+    "href": "index.html#mapas-de-calor-con-heatmaply",
+    "title": "Módulo 3: Visualización de datos con ggplot2",
+    "section": "Mapas de calor con heatmaply",
+    "text": "Mapas de calor con heatmaply\n\nGráfico bidimensional de datos en donde los valores son representados con colores.\nLas variables de los ejes deben ser categóricas, y la intensidad de los colores en el plano coordenado depende de la magnitud de una variable continua.\n\n\nCódigoGráfico\n\n\n\ninstall.packages(\"heatmaply\", dependencies = T)\nlibrary(heatmaply)\nheatmaply(\n  mtcars,\n  scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(\n    low = \"blue\", \n    high = \"red\", \n    midpoint = 200, \n    limits = c(0, 500)\n  )\n)"
   }
 ]
